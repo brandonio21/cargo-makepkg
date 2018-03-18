@@ -1,17 +1,18 @@
 [package]
-name = "cargo-arch"
+name = "cargo-pkgbuild"
 version = "0.1.0"
-authors = ["Chiu-Hsiang Hsu <wdv4758h@gmail.com>"]
+authors = ["Chiu-Hsiang Hsu <wdv4758h@gmail.com>", "Brandon Milton <brandon.milton21@gmail.com>"]
 license = "Apache-2.0"
-readme = "README.rst"
-description = "Rust Arch Linux package packer"
-repository = "https://github.com/wdv4758h/cargo-arch/"
+readme = "README.md"
+description = "Build ArchLinux packages with Cargo"
+repository = "https://github.com/brandonio21/cargo-makepkg"
 keywords = ["cargo", "package"]
 
 [dependencies]
-clap = { version = "2.10.0", features = ["yaml"] }
-rustc-serialize = "0.3.19"
-toml = "0.2.0"
+serde = "1.0.33"
+serde_derive = "1.0.33"
+serde_json = "1.0.11"
+toml = "0.4.5"
 
 [package.metadata.arch]
 arch = ["x86_64"]

@@ -1,10 +1,9 @@
 //! Metadata for different platform's package
 
-use super::arch::CargoArch;
-
+use config::arch::CargoPKGBUILDManifest;
 
 /// data in `[package.metadata]` section
-#[derive(Clone, Debug, Default, RustcDecodable)]
+#[derive(Deserialize, Default)]
 pub struct CargoMetadata {
-    pub arch: Option<CargoArch>,
+    pub archlinux_pkgbuild: Option<CargoPKGBUILDManifest>,
 }

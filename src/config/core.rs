@@ -1,16 +1,23 @@
 //! Basic Rust package's config, modified from Cargo.
-
-use super::meta::CargoMetadata;
+use config::meta::CargoMetadata;
+use toml;
 
 
 /// data in Cargo.toml
-#[derive(Clone, Debug, RustcDecodable)]
-pub struct Cargo {
+#[derive(Deserialize)]
+pub struct CargoManifest {
     pub package: CargoPackage,
 }
 
+impl CargoManifest {
+    pub fn from_str(contents: &str) -> CargoManifest {
+        toml::from_str(&contents)
+            .expect("Could not decode CargoManifest text")
+    }
+}
+
 /// data in `[package]` section
-#[derive(Clone, Debug, RustcDecodable)]
+#[derive(Deserialize)]
 pub struct CargoPackage {
     pub name: String,
     pub version: String,
@@ -25,13 +32,11 @@ pub struct CargoPackage {
     pub metadata: Option<CargoMetadata>,
 }
 
-
-/// A trait for making specific platform package config's settings
-pub trait ToPackageConfig<T> {
-    fn to_config(&self) -> T;
+pub trait PopulateFromCargoManifest<T> {
+    fn from_cargo_manifest(cargo_manifest: CargoManifest) -> T;
 }
 
 /// A trait for generate specific platform package's config
 pub trait GeneratePackageConfig {
-    fn generate_package_config(&self);
+    fn generate_config(&self) -> String;
 }

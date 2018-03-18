@@ -1,41 +1,44 @@
 //! `cargo arch` is a Cargo plugin for making Arch Linux packages.
 //! Packages' information is extract from `Cargo.toml`.
 //! You can add additional information in `[package.metadata.arch]` section.
-
-#![feature(custom_derive)]
-
 #[macro_use]
-extern crate clap;
+extern crate serde_derive;
+extern crate serde_json;
 extern crate toml;
-extern crate rustc_serialize;
 
-use clap::App;
+use std::process::Command;
+use std::fs::File;
+use std::io::prelude::*;
+use std::io::Result;
 
-pub mod config;
-pub mod utils;
+use serde_json::Value;
 
-pub use utils::*;
+mod config;
+use config::core::{CargoManifest, GeneratePackageConfig, PopulateFromCargoManifest};
+use config::arch::PKGBUILDConfig;
 
+fn get_cargo_manifest_path() -> String {
+    let output = Command::new("cargo").arg("locate-project").output().unwrap();
+    let json: Value = serde_json::from_str(&String::from_utf8(output.stdout).unwrap()).unwrap();
+    json["root"].as_str().unwrap().to_owned()
+}
+
+fn read_cargo_manifest() -> Result<CargoManifest> {
+    let path = get_cargo_manifest_path();
+    let mut file = File::open(&path)?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)?;
+    Ok(CargoManifest::from_str(&contents))
+}
+
+fn write_pkgbuild(pkgbuild: &PKGBUILDConfig) -> Result<()> {
+    let mut pkgbuild_file = File::create("pkgbuild")?;
+    pkgbuild_file.write_all(pkgbuild.generate_config().as_bytes());
+    Ok(())
+}
 
 fn main() {
-
-    ////////////////////
-    // Parse Arguments
-    ////////////////////
-
-    let yml = load_yaml!("arguments.yml");
-    let arguments = App::from_yaml(yml).get_matches();
-    let arguments = arguments.subcommand_matches("arch").unwrap();
-    let build = arguments.value_of("build").unwrap().parse::<bool>().unwrap();
-    let install = arguments.is_present("install");
-    let syncdeps = arguments.is_present("syncdeps");
-    let force = arguments.is_present("force");
-    let mksrcinfo = arguments.is_present("mksrcinfo");
-
-    ////////////////////
-    // Build Arch Package
-    ////////////////////
-
-    build_arch_package(mksrcinfo, build, install, syncdeps, force);
-
+    let cargo_manifest = read_cargo_manifest().unwrap();
+    let pkgbuild_config = PKGBUILDConfig::from_cargo_manifest(cargo_manifest);
+    write_pkgbuild(&pkgbuild_config);
 }

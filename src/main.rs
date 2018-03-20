@@ -32,7 +32,7 @@ fn read_cargo_manifest() -> Result<CargoManifest> {
 }
 
 fn write_pkgbuild(pkgbuild: &PKGBUILDConfig) -> Result<()> {
-    let mut pkgbuild_file = File::create("pkgbuild")?;
+    let mut pkgbuild_file = File::create("PKGBUILD")?;
     pkgbuild_file.write_all(pkgbuild.generate_config().as_bytes());
     Ok(())
 }

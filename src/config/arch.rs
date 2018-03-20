@@ -2,7 +2,7 @@
 use config::core::{CargoManifest, PopulateFromCargoManifest, GeneratePackageConfig};
 use config::meta::CargoMetadata;
 
-#[test]
+#[cfg(test)]
 use config::core::CargoPackage;
 
 

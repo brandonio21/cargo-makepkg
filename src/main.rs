@@ -64,10 +64,23 @@ fn write_pkgbuild(pkgbuild_dir: &Path, pkgbuild: &PKGBUILDConfig) {
         .expect("Could not write PKGBUILD file");
 }
 
+fn run_makepkg(pkgbuild_dir: &Path) {
+    let mut makepkg_proc = Command::new("makepkg").current_dir(&pkgbuild_dir).spawn()
+        .expect("Failed to execute `makepkg`");
+    let exitcode = makepkg_proc.wait().expect("Failed to wait on makepkg process");
+    if !exitcode.success() {
+        match exitcode.code() {
+            Some(code) => panic!("makepkg failed with exit code {}", code),
+            None => panic!("makepkg failed."),
+        }
+    }
+}
+
 fn main() {
     let cargo_manifest_path = get_cargo_manifest_path();
     let cargo_manifest = read_cargo_manifest(&cargo_manifest_path);
     let pkgbuild_config = PKGBUILDConfig::from_cargo_manifest(cargo_manifest);
     let pkgbuild_dir = get_pkgbuild_directory(&cargo_manifest_path, &pkgbuild_config);
     write_pkgbuild(&pkgbuild_dir.as_path(), &pkgbuild_config);
+    run_makepkg(&pkgbuild_dir.as_path());
 }

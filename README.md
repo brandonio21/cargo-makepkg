@@ -4,9 +4,13 @@ cargo-makepkg
 
 
 A Cargo extension similar to [cargo-deb](https://github.com/mmstick/cargo-deb)
-which allows building of Arch Linux packages from cargo. This makes it quick-and-easy to send your Rust projects to your Arch using friends!
+which allows building of Arch Linux packages from cargo. This makes it
+quick-and-easy to send your Rust projects to your Arch using friends!
 
-This process involves building a `PKGBUILD` file and invoking `makepkg` to create a `.tar.xz` package and a `.SRCINFO` file.
+This process involves building a [PKGBUILD](https://wiki.archlinux.org/index.php/PKGBUILD)
+file and invoking [makepkg](https://wiki.archlinux.org/index.php/makepkg) to
+create a `.tar.xz` package and a [.SRCINFO](https://wiki.archlinux.org/index.php/.SRCINFO)
+file.
 
 Usage
 -----

@@ -1,6 +1,6 @@
 cargo-makepkg
 =============
-![cargo-makepkg is on crates.io](https://img.shields.io/crates/v/cargo-makepkg.svg "Find package on crates.io")
+[![cargo-makepkg is on crates.io](https://img.shields.io/crates/v/cargo-makepkg.svg "Find package on crates.io")](https://crates.io/crates/cargo-makepkg)
 
 
 A Cargo extension similar to [cargo-deb](https://github.com/mmstick/cargo-deb)

@@ -13,6 +13,10 @@ cargo makepkg
 cat target/archlinux/<version>/PKGBUILD
 ```
 
+Information will be extracted from `Cargo.toml` to create a `PKGBUILD` file.
+If you have any differing information, it can be specified in the `[package.metadata.archlinux_pkgbuild]`
+section of `Cargo.toml`. See `src/config/arch.rs` for available fields.
+
 Similar Projects
 ----------------
 cargo-makepkg is technically a heavily-modified fork of [cargo-arch](https://github.com/wdv4758h/cargo-arch), which builds `PKGBUILD` files based on the contents of `Cargo.toml`.

@@ -1,6 +1,8 @@
 cargo-makepkg
 =============
 [package on crates.io](https://crates.io/crates/cargo-makepkg)
+
+
 A Cargo extension similar to [cargo-deb](https://github.com/mmstick/cargo-deb)
 which allows building of Arch Linux packages from cargo. This makes it quick-and-easy to send your Rust projects to your Arch using friends!
 

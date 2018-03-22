@@ -70,7 +70,9 @@ impl PopulateFromCargoManifest<PKGBUILDConfig> for PKGBUILDConfig {
             cargo_manifest.package.description
         );
         let url = override_pkgbuild_config.url.unwrap_or(
-            cargo_manifest.package.homepage.unwrap_or("".to_string())
+            cargo_manifest.package.homepage.unwrap_or(
+                cargo_manifest.package.repository.unwrap_or("".to_string())
+            )
         );
 
         PKGBUILDConfig {
